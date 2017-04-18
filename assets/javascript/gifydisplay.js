@@ -1,48 +1,114 @@
-$("#add-topic").on("click", function(event) {
-
-	event.preventDefault();
-
-	var searchTopic = $("#topic-input").val();
-
-	var queryURL = "https://api.giphy.com/v1/gifs/search?q="
-					 + searchTopic + "&api_key=dc6zaTOxFJmzC&limit=10"; 
 
 	var dataState;	
 	
 	var images = $("<img>");
 
-	var imgIdent;		 
+	var buttonsholder = $(".button-container");
+
+	var imgIdent;	 
+
+	var giphyResults=[];	
+
+	var sports = ["Soccer", "Basketball", "Football", "Baseball", "Cricket", "Tennis"];
+
+	var button;
+
+
+	$(document).on("click", ".button-class", function(){
+
+		$(".gify-container").empty();
+		var searchSport = $(this).attr("data-name");
+		console.log(this);
+        var queryURL = "https://api.giphy.com/v1/gifs/search?q="
+					 + searchSport + "&api_key=dc6zaTOxFJmzC&limit=10";
+
+		
+		$.ajax({
+			url: queryURL,
+			method: "GET"
+		}).done(function(response) {
+
+			console.log(response);
+
+			giphyResults = response.data;
+
+			console.log(giphyResults);
+			generateGifs();	
+		});	
+		
+
+
+	});
+
+
+	function generateSportInfo() {
+
+		var searchSport = $(this).attr("data-name");
+		console.log(this);
+        var queryURL = "https://api.giphy.com/v1/gifs/search?q="
+					 + searchSport + "&api_key=dc6zaTOxFJmzC&limit=10";
+
+		
+		$.ajax({
+			url: queryURL,
+			method: "GET"
+		}).done(function(response) {
+
+			console.log(response);
+
+			giphyResults = response.data;
+
+			console.log(giphyResults);
+			generateGifs();	
+		});	
 
 		
 
-	$.ajax({
+	}
 
-		url: queryURL,
-		method: "GET"
-	}).done(function(response) {
+	function generateSportsButtons() {
 
-		console.log(response);
+		for(var j=0; j<sports.length; j++){
+			button = $("<button class = 'button-class'>");
+			button.attr("data-name", sports[j]);	
+			button.text(sports[j]);
+			buttonsholder.append(button);
 
-		var giphyResults = response.data;
+		}	
 
+	}	
+
+	
 		
-		for(var i = 0; i< giphyResults.length; i++){
+	function generateGifs() {	
+
+			//event.preventDefault();
 		
-			var gifDiv = $("<div class = 'gifs'>");
-			images = $("<img>");
-			images.attr("src", giphyResults[i].images.fixed_height_small_still.url);
-			images.attr("data-state", "still");
-			images.attr("ident", i);
+			console.log(giphyResults.lenth);
+			
+			for(var i = 0; i< giphyResults.length; i++){
+			
+				var gifDiv = $("<div class = 'gifs'>");
+				var images = $("<img>");
+				images.attr("src", giphyResults[i].images.fixed_height_small_still.url);
+				images.attr("data-state", "still");
+				images.attr("ident", i);
 
-			var rating = giphyResults[i].rating;
-			var displayRating = $("<p>").text("Rating: " + rating);
+				var rating = giphyResults[i].rating;
+				var displayRating = $("<p>").text("Rating: " + rating);
 
-			gifDiv.append(images);
-			gifDiv.append(displayRating);
+				gifDiv.append(images);
+				gifDiv.append(displayRating);
 
-			$("#gify-container").prepend(gifDiv);
-		
-		}
+				$(".gify-container").prepend(gifDiv);
+
+			};
+
+		manageGifClicks();
+
+	}
+
+	function manageGifClicks() {
 		
 		$("img").on("click", function() {	
 
@@ -71,30 +137,26 @@ $("#add-topic").on("click", function(event) {
 		 	}
 
 	 	});	
+	}	
+
+	$("#add-sport").on("click", function(event) {
+		event.preventDefault();
+		var newSport = $("#sport-input").val().trim();
+		sports.push(newSport);
+		button = $("<button class = 'button-class'>");
+		button.attr("data-name", newSport);	
+		button.text(newSport);
+		buttonsholder.append(button);
+	});	
+	
+
+	
+	generateSportsButtons();
+
+
 				
 
-	});
 
-});
-
-//$(document).on("click", "button", function(){
-
-
-
-
-
-
-
-
-/*		$(function() {
-    $('a img').click(function() {
-    $img=$(this).attr('src');    
-
-    $('#div1').append("<img src="+$img+" />")
-
-  });
-
-});*/
 
 
 

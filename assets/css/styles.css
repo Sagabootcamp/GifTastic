@@ -1,23 +1,30 @@
 body{
-max-width: 80%;
-
-background-color: grey;
-
 
 	
 }
 
-#main-container{
+h1{
 
+	text-align: center;
+}
+
+.button-container{
+
+text-align: center;
 
 }
 
-#button-container{
-
+.button-class{
+	padding: 10px;
+	margin: 20px;
+	background-color: #20B2AA;
 }
 
-#gify-container{
-	max-width : 1000px;
+.gify-container{
+
+	margin-top: 50px;
+
+	
 }
 
 label, input{
@@ -26,9 +33,13 @@ label, input{
 
 .gifs{
 	float: left;
-	margin: 10px;
+	height: 200px;
+	width: 200px;
+	
 }
 
-#form-container{
-	float: right;
+.form-container{
+
+	
+	
 }
